@@ -1,0 +1,40 @@
+application:
+  name: ai-data-quality-monitoring-framework
+  environment: local
+
+data_quality:
+  missing_threshold: 0.05
+  duplicate_threshold: 0.01
+  min_rows: 1
+  outliers:
+    method: iqr
+    iqr_multiplier: 1.5
+    max_outlier_rate: 0.05
+
+drift:
+  psi_warning: 0.10
+  psi_critical: 0.25
+  ks_p_value: 0.05
+  chi_square_p_value: 0.05
+  js_warning: 0.05
+  js_critical: 0.15
+  use_evidently: false
+
+model_monitoring:
+  min_accuracy: 0.80
+  min_precision: 0.75
+  min_recall: 0.75
+  min_f1: 0.75
+  max_expected_calibration_error: 0.08
+  max_brier_score: 0.20
+
+alerts:
+  min_severity: high
+  webhook_url: ""
+
+schedules:
+  - name: hourly-enterprise-monitoring
+    cron: "0 * * * *"
+    callable_path: sample.monitoring_run
+    enabled: true
+
