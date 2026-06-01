@@ -1,21 +1,21 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from datetime import UTC, datetime
-from enum import StrEnum
+from datetime import datetime, timezone
+from enum import Enum
 from statistics import mean
 from typing import Any
 from uuid import uuid4
 
 
-class CheckStatus(StrEnum):
+class CheckStatus(str, Enum):
     PASS = "pass"
     WARN = "warn"
     FAIL = "fail"
     SKIP = "skip"
 
 
-class CheckSeverity(StrEnum):
+class CheckSeverity(str, Enum):
     INFO = "info"
     LOW = "low"
     MEDIUM = "medium"
@@ -49,7 +49,7 @@ class CheckResult:
 class MonitoringReport:
     dataset_name: str
     run_id: str = field(default_factory=lambda: str(uuid4()))
-    created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     checks: list[CheckResult] = field(default_factory=list)
     metrics: dict[str, Any] = field(default_factory=dict)
     alerts: list[dict[str, Any]] = field(default_factory=list)
@@ -86,4 +86,3 @@ class MonitoringReport:
             "alerts": self.alerts,
             "metadata": self.metadata,
         }
-
